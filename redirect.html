@@ -1,0 +1,28 @@
+---
+layout: default
+title: 404.html
+---
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting...</title>
+
+</head>
+<body>
+  <h1>Redirecting you to the blog...</h1>
+  <script>
+   
+    dataLayer.push({
+      event: 'redirect_to_google',
+      blog_url: 'https://www.google.com/',
+      timestamp: new Date().toISOString()
+    });
+
+    // Delay for tracking before redirect
+    setTimeout(function() {
+      window.location.href = "https://www.google.com/";
+    }, 800);
+  </script>
+</body>
+</html>
