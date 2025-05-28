@@ -1,0 +1,134 @@
+---
+layout: default
+title: contact.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Running Shoe Event</title>
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f0e9; /* Adjust this to your image's bg color */
+  }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .image-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .image-container img {
+      max-width: 100%;
+      cursor: pointer;
+    }
+    .comments-section {
+      margin-top: 20px;
+    }
+    .comments-section textarea,
+    .comments-section input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .comments-section button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .comments-section button:hover {
+      background-color: #0056b3;
+    }
+    .comments-list {
+      margin-top: 20px;
+    }
+    .comment {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="image-container">
+      <a href="comments.html">
+        <img src="assets/img/event/shoes_promotion.jpeg" alt="Running Shoe Event" />
+      </a>
+    </div>
+
+    <div class="comments-section">
+      <h2>얼마나 갖고 싶은지 댓글로 표현하기</h2>
+      <textarea id="commentInput" placeholder="여기에 표현해 보세요"></textarea>
+      <input type="text" id="nicknameInput" placeholder="닉네임을 입력하세요" />
+      <button onclick="addComment()">제출하기</button>
+      <button onclick="clearComments()" style="margin-top:10px; background-color: red;">댓글 모두 지우기</button>
+    </div>
+
+    <div class="comments-list" id="commentsList">
+      <!-- Comments will appear here -->
+    </div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      const savedComments = JSON.parse(localStorage.getItem('comments')) || [];
+      const commentsList = document.getElementById('commentsList');
+
+      savedComments.forEach(function (item) {
+        const commentBox = document.createElement('div');
+        commentBox.classList.add('comment');
+        commentBox.innerHTML = `<strong>${item.nickname}</strong> (${item.time})<br>${item.text}`;
+        commentsList.appendChild(commentBox);
+      });
+    };
+
+    function addComment() {
+      const commentInput = document.getElementById('commentInput');
+      const nicknameInput = document.getElementById('nicknameInput');
+      const commentsList = document.getElementById('commentsList');
+
+      if (commentInput.value.trim() === '' || nicknameInput.value.trim() === '') {
+        alert('닉네임과 댓글을 모두 입력해 주세요.');
+        return;
+      }
+
+      const now = new Date();
+      const timeString = now.toLocaleString('ko-KR');
+
+      const newComment = {
+        text: commentInput.value,
+        nickname: nicknameInput.value,
+        time: timeString
+      };
+
+      const savedComments = JSON.parse(localStorage.getItem('comments')) || [];
+      savedComments.push(newComment);
+      localStorage.setItem('comments', JSON.stringify(savedComments));
+
+      const commentBox = document.createElement('div');
+      commentBox.classList.add('comment');
+      commentBox.innerHTML = `<strong>${newComment.nickname}</strong> (${newComment.time})<br>${newComment.text}`;
+      commentsList.appendChild(commentBox);
+
+      commentInput.value = '';
+      nicknameInput.value = '';
+    }
+
+    function clearComments() {
+      localStorage.removeItem('comments');
+      location.reload();
+    }
+  </script>
+</body>
+</html>
